@@ -1,0 +1,473 @@
+import type { Service, Plan, Settings, Section, FAQ, Page } from "./types";
+import {
+  cloudSettings,
+  serviceOrder,
+  planOrder,
+  sectionCopy,
+  pageCopy,
+} from "./positioning";
+export const settings: Settings = {
+  businessName: "newTon",
+  tagline: "TECHNOLOGY",
+  heroEyebrow: "Built for what?s next",
+  heroNote: "Security in every layer. Partnership at every step.",
+  whyItems: [
+    "One connected team|Software, infrastructure, and security decisions made together.",
+    "Security by design|Practical safeguards considered from discovery through operations.",
+    "Clarity at every step|Documented scope, regular updates, and transparent ownership.",
+    "A long-term perspective|Maintainable systems and support that evolves with your business.",
+  ],
+  managedFeatures: [
+    "Clear ownership and escalation paths",
+    "Proactive maintenance and monitoring",
+    "Continuous cost and performance reviews",
+  ],
+  ctaEyebrow: "Your next chapter starts here",
+  ctaTitle: "Let?s make technology work for your business.",
+  ctaDescription: "Bring your challenges. We?ll bring a clear way forward.",
+  ctaButton: "Get a free consultation",
+  heroTitle: "Your technology.\nOur expertise.\nYour next chapter.",
+  heroSubtitle:
+    "From the first line of code to the infrastructure behind it. One technology partner to build, secure, and support what comes next.",
+  heroCta: "Get a free consultation",
+  companyDescription:
+    "We bring software engineering, cloud operations, and cybersecurity together. A connected approach to technology, built around your business.",
+  footer: "Technology that moves your business forward.",
+  supportEmail: "",
+  notificationEmail: "",
+  phone: "",
+  whatsapp: "",
+  address: "",
+  logo: "",
+  favicon: "",
+  defaultCurrency: "USD",
+  socialLinks: [],
+  trustItems: [
+    "Full lifecycle delivery",
+    "Security-first engineering",
+    "Built to scale",
+    "Dedicated specialists",
+  ],
+  processSteps: [
+    "Discover|Understand your goals, systems, and constraints.",
+    "Plan|Define the architecture, scope, and delivery roadmap.",
+    "Build or migrate|Deliver in clear milestones with regular reviews.",
+    "Secure|Validate access, harden systems, and address risks.",
+    "Monitor|Watch the systems that your business relies on.",
+    "Optimize|Improve performance, costs, and resilience.",
+  ],
+};
+const entries = [
+  [
+    "custom-software-development",
+    "Custom software development",
+    "Software engineering",
+    "Purpose-built software for the way your business works.",
+    "Replace disconnected tools and manual workflows with a maintainable application designed around your operations. We cover discovery, architecture, implementation, testing, deployment, and application modernization.",
+    "Growing teams, established businesses, and organizations with specialized workflows.",
+    "Reduce repetitive work, connect business data, and gain ownership of a platform that can evolve.",
+    "Product discovery → technical design → iterative delivery → acceptance testing → maintenance",
+    "code",
+    [
+      "Business applications and internal platforms",
+      "API design and third-party integrations",
+      "Legacy modernization and application maintenance",
+      "Automated testing and technical documentation",
+    ],
+  ],
+  [
+    "web-development",
+    "Websites & web applications",
+    "Software engineering",
+    "Digital experiences that work beautifully, everywhere.",
+    "Build an accessible, responsive website or web application with a clear user journey, maintainable content, and reliable deployment. We consider performance and search visibility throughout delivery.",
+    "Organizations launching a digital presence, customer portal, or online service.",
+    "Improve usability, simplify content operations, and give your customers a consistent experience.",
+    "Audience discovery → UX and visual design → development → quality assurance → launch",
+    ["code"],
+    [
+      "Responsive websites and customer portals",
+      "Accessible interfaces and content management",
+      "Performance and search optimization",
+      "Hosting, deployment, and ongoing updates",
+    ],
+  ],
+  [
+    "cloud-hosting",
+    "Cloud hosting & deployment",
+    "Cloud & operations",
+    "A dependable foundation for your digital business.",
+    "Bring domains, DNS, TLS, hosting, and application deployment into one documented operating model. Hosting architecture and backup scope are agreed around the needs of your application.",
+    "Teams launching websites or replacing fragmented hosting arrangements.",
+    "Simplify ownership, improve operational visibility, and establish repeatable releases.",
+    "Hosting assessment → architecture → DNS and TLS setup → deployment → operational handover",
+    "cloud",
+    [
+      "Domain and DNS configuration",
+      "TLS certificates and renewal monitoring",
+      "Application hosting and deployment",
+      "Backups, monitoring, and recovery planning",
+    ],
+  ],
+  [
+    "cloud-migration",
+    "Cloud migration",
+    "Cloud & operations",
+    "Move forward, without leaving the details behind.",
+    "Move workloads from on-premises or existing providers through an assessment-led migration. Each phase includes dependencies, rollback planning, validation, and post-migration support.",
+    "Businesses moving aging infrastructure or consolidating cloud environments.",
+    "Gain a more flexible foundation with documented dependencies and controlled migration risk.",
+    "Discovery → migration plan → pilot → phased migration → validation → post-migration support",
+    "cloud",
+    [
+      "Workload and dependency discovery",
+      "Target architecture and cost planning",
+      "Migration execution and rollback preparation",
+      "Validation and post-migration stabilization",
+    ],
+  ],
+  [
+    "managed-cloud-services",
+    "Managed cloud services",
+    "Cloud & operations",
+    "Your cloud, with a team behind it.",
+    "Operate your existing AWS, Microsoft Azure, or Google Cloud environment with clear responsibilities, observability, and ongoing optimization. Provider accounts can remain under your ownership.",
+    "Teams that need ongoing cloud expertise without building an entire operations department.",
+    "Improve visibility, control cloud spend, and give engineers more time to focus on their products.",
+    "Environment review → onboarding → monitoring setup → recurring maintenance → optimization reviews",
+    "cloud",
+    [
+      "AWS, Azure, and Google Cloud management",
+      "Monitoring, alerting, and incident support",
+      "Access management and cost reviews",
+      "Backup checks and capacity planning",
+    ],
+  ],
+  [
+    "server-management",
+    "Server management",
+    "Cloud & operations",
+    "Keep the foundations of your business in good hands.",
+    "Maintain Linux and Windows servers with an agreed patching, backup, monitoring, and escalation process. We document access and operational procedures so support remains transparent.",
+    "Businesses running dedicated servers, virtual machines, and hybrid infrastructure.",
+    "Reduce operational drift, improve recovery preparedness, and establish clear support ownership.",
+    "Server audit → hardening baseline → monitoring → scheduled patching → recovery reviews",
+    "server",
+    [
+      "Linux and Windows administration",
+      "Patch and configuration management",
+      "Server monitoring and incident support",
+      "Backup and disaster recovery planning",
+    ],
+  ],
+  [
+    "cybersecurity",
+    "Cybersecurity",
+    "Cybersecurity",
+    "Security built into your technology, from the start.",
+    "Identify and address practical security risks across applications, infrastructure, identities, and operations. Recommendations prioritize business impact and realistic remediation.",
+    "Organizations seeking to strengthen security as systems and teams grow.",
+    "Understand exposure, prioritize improvements, and develop more consistent security practices.",
+    "Scope and authorization → assessment → prioritized findings → remediation → validation",
+    "shield",
+    [
+      "Security posture and vulnerability reviews",
+      "Application security and access controls",
+      "Infrastructure hardening and TLS review",
+      "Remediation and incident response support",
+    ],
+  ],
+  [
+    "security-auditing",
+    "Security auditing",
+    "Cybersecurity",
+    "Understand your exposure. Know your next steps.",
+    "Conduct explicitly authorized, scoped security assessments with clear rules of engagement. Receive documented findings, risk context, and actionable remediation guidance.",
+    "Organizations preparing for a release, reviewing a platform, or evaluating security controls.",
+    "Make informed remediation decisions with evidence and a clear view of assessment limitations.",
+    "Written authorization → scope → assessment → report → remediation consultation → retest",
+    "shield",
+    [
+      "Authorized application and infrastructure reviews",
+      "Configuration and identity assessments",
+      "Prioritized findings with supporting evidence",
+      "Remediation guidance and optional retesting",
+    ],
+  ],
+  [
+    "devops-automation",
+    "DevOps & automation",
+    "Cloud & operations",
+    "From development to production, with confidence.",
+    "Make releases and infrastructure changes repeatable with CI/CD, containers, and infrastructure as code. Tool choices are based on your team and operational needs.",
+    "Development teams improving release reliability or scaling their delivery practices.",
+    "Reduce manual steps, improve traceability, and shorten the path from code to a validated release.",
+    "Delivery assessment → pipeline design → automation → validation → team handover",
+    "workflow",
+    [
+      "CI/CD pipeline design and implementation",
+      "Docker and Kubernetes operations",
+      "Infrastructure as code and configuration automation",
+      "Release checks, observability, and runbooks",
+    ],
+  ],
+] as const;
+export const services: Service[] = entries.map((e, i) => ({
+  id: `service-${i}`,
+  slug: e[0],
+  title: e[1],
+  division: e[2],
+  description: e[3],
+  body: e[4],
+  audience: e[5],
+  benefits: e[6],
+  process: e[7],
+  icon: typeof e[8] === "string" ? e[8] : "code",
+  image: "",
+  features: [...e[9]],
+  faqs: [
+    {
+      question: "How is the engagement scoped?",
+      answer:
+        "We start with a discovery conversation, document the deliverables and responsibilities, and agree milestones before work begins.",
+    },
+    {
+      question: "Can you support our existing environment?",
+      answer:
+        "Yes. We first review the current systems, access requirements, and dependencies to recommend an appropriate scope.",
+    },
+  ],
+  seo_title: "",
+  seo_description: "",
+  published: true,
+  position: i,
+}));
+export const plans: Plan[] = [
+  [
+    "Project delivery",
+    "A focused engagement, from discovery to handover.",
+    "project",
+    [
+      "Discovery and solution architecture",
+      "Agreed scope and delivery milestones",
+      "Testing and documentation",
+      "Deployment and handover",
+    ],
+  ],
+  [
+    "Managed website",
+    "Keep your website maintained and supported.",
+    "month",
+    [
+      "Website and hosting maintenance",
+      "TLS and availability monitoring",
+      "Scheduled updates",
+      "Backup checks",
+    ],
+  ],
+  [
+    "Managed infrastructure",
+    "An ongoing partner for your cloud and servers.",
+    "month",
+    [
+      "Cloud or server administration",
+      "Monitoring and incident support",
+      "Patching and backup reviews",
+      "Regular optimization reviews",
+    ],
+  ],
+  [
+    "Security assessment",
+    "A clear view of your security priorities.",
+    "assessment",
+    [
+      "Agreed assessment scope",
+      "Authorized security review",
+      "Prioritized findings report",
+      "Remediation consultation",
+    ],
+  ],
+  [
+    "Managed servers",
+    "Practical support for Linux and Windows.",
+    "month",
+    [
+      "Server monitoring",
+      "Scheduled patch management",
+      "Backup reviews",
+      "Documented escalation",
+    ],
+  ],
+  [
+    "Enterprise partnership",
+    "A tailored technology engagement.",
+    "project",
+    [
+      "Cross-discipline delivery team",
+      "Custom service scope",
+      "Agreed support coverage",
+      "Technical roadmap reviews",
+    ],
+  ],
+].map((p, i) => ({
+  id: `plan-${i}`,
+  name: p[0] as string,
+  description: p[1] as string,
+  amount: null,
+  currency: "USD",
+  interval: p[2] as string,
+  features: p[3] as string[],
+  addons: ["Extended support coverage", "Additional environments"],
+  cta: "Discuss your requirements",
+  popular: i === 2,
+  position: i,
+  visible: true,
+  service_id: null,
+}));
+export const faqs: FAQ[] = [
+  [
+    "Can you manage our existing technology?",
+    "Yes. We can work with your current applications, cloud accounts, and servers. An initial review helps establish priorities, responsibilities, and a practical onboarding plan.",
+  ],
+  [
+    "Do we need all three service divisions?",
+    "No. Start with the expertise you need today. Our software, cloud, and security teams can work independently or together as your requirements evolve.",
+  ],
+  [
+    "How do you price an engagement?",
+    "Projects are scoped individually. Ongoing services are priced around infrastructure complexity, support coverage, and responsibilities. Third-party cloud and software charges are identified separately.",
+  ],
+  [
+    "Who owns the cloud accounts and source code?",
+    "Ownership and access are documented in your agreement. We can manage cloud accounts you own, with source code and handover arrangements agreed before delivery.",
+  ],
+  [
+    "What happens after launch?",
+    "We can provide ongoing monitoring, patching, application maintenance, and technical support under an agreed service plan. Response targets and coverage are defined in the agreement.",
+  ],
+].map((x, i) => ({
+  id: `faq-${i}`,
+  question: x[0],
+  answer: x[1],
+  position: i,
+  visible: true,
+}));
+export const sections: Section[] = [
+  [
+    "services",
+    "Expertise that connects.",
+    "Three disciplines. One coordinated technology partner.",
+  ],
+  [
+    "why",
+    "Built together. Better together.",
+    "When your software, infrastructure, and security teams share the same roadmap, technology moves forward with fewer gaps.",
+  ],
+  [
+    "process",
+    "A clear path from idea to operation.",
+    "A considered process. Clear responsibilities. Visibility at every stage.",
+  ],
+  [
+    "managed",
+    "Launch is just the beginning.",
+    "Your business keeps moving. So should your technology. Our managed services keep your cloud, servers, and applications supported long after go-live.",
+  ],
+  [
+    "pricing",
+    "The right expertise. The right engagement.",
+    "A focused project or an ongoing partnership. We shape the scope around your needs.",
+  ],
+  [
+    "industries",
+    "Built around your world.",
+    "Technology shaped by the realities of your industry.",
+  ],
+  [
+    "faq",
+    "A few things you might be wondering.",
+    "Straightforward answers before we start a conversation.",
+  ],
+].map((s, i) => ({
+  id: `section-${i}`,
+  slug: s[0],
+  title: s[1],
+  description: s[2],
+  image: "",
+  background: i === 3 ? "dark" : i % 2 ? "soft" : "light",
+  position: i,
+  visible: true,
+}));
+export const pages: Page[] = [
+  ["home", "Technology that moves you forward", settings.heroSubtitle, ""],
+  [
+    "about",
+    "One partner. A broader perspective.",
+    "Technology works best when the people behind it work together.",
+    `${settings.companyDescription}\n\nOur approach brings the complete technology lifecycle into one conversation: what to build, where it runs, how it is protected, and how it will be supported.\n\nWe work with startups, growing businesses, and established organizations. Every engagement begins with listening, a clear scope, and an honest discussion of priorities.\n\nWe value maintainable engineering, transparent communication, thoughtful security, and documentation that makes technology easier to own.`,
+  ],
+  [
+    "services",
+    "The expertise to take you further.",
+    "Software. Cloud. Security. Connected from the start.",
+    "",
+  ],
+  [
+    "solutions",
+    "Technology for your next stage.",
+    "Practical solutions to the challenges that slow business down.",
+    "Launch a digital product|Bring product discovery, application engineering, cloud deployment, and security review together in one delivery plan.\nModernize your operations|Replace manual processes, integrate disconnected systems, and modernize legacy applications in manageable phases.\nMove to the cloud|Plan a migration around dependencies, business priorities, validation, and operational readiness.\nStrengthen your foundations|Understand security risks, improve reliability, and establish an ongoing maintenance and support model.",
+  ],
+  [
+    "pricing",
+    "Expertise that fits your business.",
+    "Clear scope. Flexible engagement. No one-size-fits-all commitments.",
+    "",
+  ],
+  [
+    "industries",
+    "Different industries. Shared ambition.",
+    "Technology aligned with the way your business actually operates.",
+    "Professional services|Client portals, workflow automation, and secure collaboration.\nRetail & commerce|Customer experiences, integrations, and scalable application infrastructure.\nHealthcare & wellness|Operational systems, access controls, and carefully scoped data workflows.\nFinance & business services|Internal platforms, infrastructure management, and security reviews.\nLogistics & operations|Connected data, operational dashboards, and process automation.\nTechnology & startups|Product engineering, cloud architecture, and delivery automation.",
+  ],
+  [
+    "contact",
+    "Let’s build your next chapter.",
+    "Tell us where you are today, and where you want to go.",
+    "",
+  ],
+  [
+    "privacy-policy",
+    "Privacy policy",
+    "How information submitted through this website is handled.",
+    "We collect information you submit through our inquiry form, including your name, company, contact details, country, service interest, and project description. Optional fields can be left blank.\n\nWe use this information to respond to your request and discuss potential services. Access is limited to authorized administrators and configured service providers needed to operate the site. We do not sell inquiry information.\n\nThe site uses essential session cookies for administrator authentication. Public visitors do not need an account.\n\nInquiries are retained for business follow-up and recordkeeping. Contact us through the inquiry form to request access, correction, or deletion, subject to applicable obligations.\n\nDeployment owner: before publication, complete the company contact details, applicable retention period, service providers, and jurisdiction-specific notices in the CMS.",
+  ],
+  [
+    "terms-and-conditions",
+    "Terms & conditions",
+    "Terms for using this website and requesting information.",
+    "Website content provides general information about our services. Submitting an inquiry does not create a service agreement. Scope, fees, ownership, confidentiality, service levels, and responsibilities are established in a separate written agreement.\n\nPrices shown, when configured, are indicative of the stated scope. Third-party services, cloud usage, taxes, and additional work may be charged separately as agreed.\n\nSecurity assessments require written authorization and an agreed scope. No service guarantees complete security, uninterrupted availability, or compliance certification.\n\nYou must not misuse the website, submit unlawful content, or attempt unauthorized access.\n\nDeployment owner: before publication, complete the legal entity, jurisdiction, contact details, and applicable liability terms in the CMS.",
+  ],
+].map((p, i) => ({
+  id: `page-${i}`,
+  slug: p[0],
+  title: p[1],
+  description: p[2],
+  body: p[3],
+  seo_title: "",
+  seo_description: "",
+  canonical: "",
+  og_image: "",
+  noindex: false,
+}));
+
+// Keep fresh installations aligned with the company's current service focus.
+Object.assign(settings, cloudSettings);
+for (const service of services)
+  service.position = serviceOrder.indexOf(service.slug);
+services.sort((a, b) => a.position - b.position);
+for (const plan of plans) plan.position = planOrder.indexOf(plan.name);
+plans.sort((a, b) => a.position - b.position);
+for (const section of sections)
+  Object.assign(section, sectionCopy[section.slug] || {});
+for (const page of pages) Object.assign(page, pageCopy[page.slug] || {});
